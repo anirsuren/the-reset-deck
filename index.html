@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Three Changes That Move the Needle — Final Presentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --navy: #16213a;
+  --navy-2: #1d2a45;
+  --cream: #f5efe4;
+  --cream-soft: #fbf7ef;
+  --ink: #1a2438;
+  --blue: #2552d6;
+  --green: #7bc59f;
+  --coral: #e07856;
+  --gold: #d4a574;
+  --mute: rgba(245, 239, 228, 0.62);
+  --line: rgba(245, 239, 228, 0.10);
+  --line-dark: rgba(26, 36, 56, 0.10);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--navy);
+  color: var(--cream);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* DECK & SLIDE FRAMEWORK */
+.deck {
+  width: 100vw; height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 96px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 400ms cubic-bezier(.4, 0, .2, 1);
+}
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+/* CORNER MARK (matches existing deck) */
+.corner-mark {
+  position: absolute;
+  top: 0; left: 0;
+  width: 130px; height: 80px;
+  pointer-events: none;
+  z-index: 3;
+}
+.corner-mark .blue {
+  position: absolute;
+  top: 0; left: 0;
+  width: 60px; height: 80px;
+  background: var(--blue);
+  clip-path: polygon(0 0, 100% 0, 60% 100%, 0 100%);
+}
+.corner-mark .green {
+  position: absolute;
+  top: 0; left: 32px;
+  width: 80px; height: 80px;
+  background: var(--green);
+  clip-path: polygon(0 0, 100% 0, 60% 100%, 0 100%);
+}
+
+/* PROGRESS / NAV */
+.deck-ui {
+  position: fixed;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 10;
+  background: rgba(22, 33, 58, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 10px 18px;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+}
+.deck-ui button {
+  background: transparent;
+  border: 0;
+  color: var(--cream);
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  opacity: 0.6;
+  transition: opacity 200ms;
+}
+.deck-ui button:hover { opacity: 1; }
+.deck-ui .counter {
+  font-family: 'Fraunces', serif;
+  font-size: 14px;
+  color: var(--cream);
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+  min-width: 50px;
+  text-align: center;
+}
+
+.progress-rail {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--line);
+  z-index: 100;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--green));
+  transition: width 400ms cubic-bezier(.4,0,.2,1);
+}
+
+/* SLIDE INNER: standard content frame */
+.frame {
+  width: 100%;
+  max-width: 1300px;
+  display: flex;
+  flex-direction: column;
+}
+.eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: 18px;
+}
+.display {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--cream);
+}
+.italic { font-style: italic; }
+
+/* ---------- SLIDE 1: TITLE ---------- */
+.slide-title .frame {
+  text-align: center;
+  align-items: center;
+}
+.slide-title h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: clamp(56px, 7.5vw, 110px);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  margin-bottom: 32px;
+}
+.slide-title h1 .accent {
+  font-style: italic;
+  color: var(--green);
+}
+.slide-title .subtitle {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--mute);
+  margin-bottom: 60px;
+}
+.slide-title .meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--mute);
+}
+.slide-title .meta .names {
+  color: var(--cream);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- SLIDE 2: WHY THIS MATTERS ---------- */
+.slide-why .frame {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  text-align: left;
+}
+.slide-why .left h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: clamp(40px, 4.5vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 32px;
+}
+.slide-why ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.slide-why li {
+  font-size: 17px;
+  line-height: 1.5;
+  color: rgba(245, 239, 228, 0.85);
+  padding-left: 22px;
+  position: relative;
+}
+.slide-why li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 11px;
+  width: 8px; height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+}
+.slide-why .right {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--navy-2);
+}
+.slide-why .right img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.stat-card {
+  position: absolute;
+  bottom: 24px; left: 24px; right: 24px;
+  background: rgba(22, 33, 58, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 22px;
+}
+.stat-card .label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute); margin-bottom: 6px; }
+.stat-card .num { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 500; line-height: 1.1; }
+.stat-card .src { font-size: 12px; color: var(--mute); margin-top: 4px; font-style: italic; }
+
+/* ---------- SLIDE 3: THE THREE CHANGES ---------- */
+.slide-three .frame {
+  align-items: stretch;
+}
+.slide-three h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: clamp(40px, 4.5vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.slide-three .lede {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 19px;
+  color: var(--mute);
+  text-align: center;
+  margin-bottom: 56px;
+}
+.three-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.three-card {
+  background: var(--navy-2);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  min-height: 320px;
+}
+.three-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.three-card[data-color="green"]::before { background: var(--green); }
+.three-card[data-color="coral"]::before { background: var(--coral); }
+.three-card[data-color="gold"]::before { background: var(--gold); }
+
+.three-num {
+  font-family: 'Fraunces', serif;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  color: var(--mute);
+  margin-bottom: 12px;
+}
+.three-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+}
+.three-tag {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: rgba(245, 239, 228, 0.78);
+  line-height: 1.45;
+  flex: 1;
+}
+
+/* ---------- SLIDE 4: EVIDENCE ---------- */
+.slide-evidence h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: clamp(40px, 4.5vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.slide-evidence .lede {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 19px;
+  color: var(--mute);
+  text-align: center;
+  margin-bottom: 56px;
+}
+.evidence-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.ev-card {
+  background: var(--navy-2);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.ev-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.ev-num {
+  font-family: 'Fraunces', serif;
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.ev-card[data-color="green"] .ev-num { color: var(--green); }
+.ev-card[data-color="coral"] .ev-num { color: var(--coral); }
+.ev-card[data-color="gold"] .ev-num { color: var(--gold); }
+.ev-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+}
+.ev-section {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-top: 4px;
+}
+.ev-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.ev-list li {
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(245, 239, 228, 0.85);
+  padding-left: 14px;
+  position: relative;
+}
+.ev-list li::before {
+  content: '·';
+  position: absolute;
+  left: 0; top: 0;
+  font-weight: bold;
+  color: var(--mute);
+}
+.ev-cite {
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgba(245, 239, 228, 0.95);
+  font-style: italic;
+  padding: 12px 14px;
+  background: rgba(245, 239, 228, 0.04);
+  border-radius: 10px;
+  border-left: 2px solid;
+}
+.ev-card[data-color="green"] .ev-cite { border-left-color: var(--green); }
+.ev-card[data-color="coral"] .ev-cite { border-left-color: var(--coral); }
+.ev-card[data-color="gold"] .ev-cite { border-left-color: var(--gold); }
+.ev-cite b { font-style: normal; font-weight: 600; }
+
+/* ---------- SLIDE 5: SO WE BUILT IT ---------- */
+.slide-built .frame {
+  text-align: center;
+  align-items: center;
+}
+.slide-built .eyebrow { color: var(--green); }
+.slide-built h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: clamp(56px, 7vw, 96px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin-bottom: 24px;
+}
+.slide-built h2 .accent { font-style: italic; color: var(--green); }
+.slide-built .url-hero {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  background: linear-gradient(90deg, var(--green), #b9e0c9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin: 32px 0 24px;
+  display: inline-block;
+  padding: 10px 32px;
+  border: 1.5px dashed rgba(123, 197, 159, 0.4);
+  border-radius: 16px;
+}
+.slide-built .tag {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 20px;
+  color: var(--mute);
+}
+
+/* ---------- SLIDE 6: LIVE DEMO ---------- */
+.slide-demo {
+  padding: 0;
+  align-items: stretch;
+  justify-content: stretch;
+}
+.demo-frame {
+  width: 100%; height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.demo-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px;
+  background: var(--navy-2);
+  border-bottom: 1px solid var(--line);
+}
+.demo-tab {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 14px;
+  color: var(--cream);
+}
+.demo-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+.demo-url {
+  font-family: 'JetBrains Mono', 'Menlo', monospace;
+  font-size: 13px;
+  color: var(--mute);
+  background: rgba(245, 239, 228, 0.06);
+  padding: 6px 12px;
+  border-radius: 99px;
+}
+.demo-iframe {
+  width: 100%; height: 100%;
+  border: 0;
+  background: var(--cream);
+}
+
+/* ---------- SLIDE 7: WE USED IT OURSELVES ---------- */
+.slide-members { padding: 60px 96px; }
+.slide-members h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: clamp(32px, 3.6vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+  text-align: center;
+}
+.slide-members .lede {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--mute);
+  text-align: center;
+  margin-bottom: 28px;
+}
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.member-card {
+  background: var(--navy-2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.member-shot {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--cream);
+}
+.member-shot img { width: 100%; height: 100%; object-fit: cover; display: block; object-position: top; }
+.member-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 0 4px 6px;
+}
+.member-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 17px;
+}
+.member-tag {
+  font-size: 11px;
+  color: var(--mute);
+  letter-spacing: 0.04em;
+}
+.member-tag b { color: var(--green); font-weight: 600; }
+
+/* ---------- SLIDE 8: BOTTOM LINE + REFERENCES ---------- */
+.slide-bottom .frame {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.slide-bottom h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: clamp(48px, 5.5vw, 80px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin-bottom: 28px;
+}
+.slide-bottom h2 .accent { font-style: italic; color: var(--green); }
+.slide-bottom .lede {
+  font-family: 'Fraunces', serif;
+  font-size: 21px;
+  color: rgba(245, 239, 228, 0.85);
+  line-height: 1.4;
+  margin-bottom: 32px;
+}
+.slide-bottom .pillars {
+  display: flex; flex-direction: column; gap: 12px;
+  margin-bottom: 32px;
+}
+.pillar { display: flex; align-items: center; gap: 14px; }
+.pillar-arrow {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--green);
+  display: grid; place-items: center;
+  color: var(--navy);
+  font-size: 13px; font-weight: 700;
+}
+.pillar-text {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 19px;
+}
+.slide-bottom .right {
+  background: rgba(245, 239, 228, 0.04);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 32px;
+}
+.refs-title {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: 18px;
+  font-weight: 600;
+}
+.refs-list {
+  list-style: none;
+  display: flex; flex-direction: column;
+  gap: 14px;
+}
+.refs-list li {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(245, 239, 228, 0.78);
+  padding-left: 14px;
+  text-indent: -14px;
+}
+.refs-list li b { color: var(--cream); font-weight: 600; }
+
+/* SCREEN-FREE THANK YOU TAG */
+.thanks-tag {
+  margin-top: 36px;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 24px;
+  color: var(--green);
+}
+
+/* Hint to navigate */
+.hint {
+  position: fixed;
+  bottom: 80px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: var(--mute);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  z-index: 5;
+  pointer-events: none;
+  animation: fadeOut 4s 2s forwards;
+}
+@keyframes fadeOut {
+  to { opacity: 0; }
+}
+
+/* RESPONSIVE GUARD */
+@media (max-width: 900px) {
+  .slide { padding: 40px 24px; }
+  .slide-why .frame, .slide-bottom .frame { grid-template-columns: 1fr; gap: 32px; }
+  .three-grid, .evidence-grid, .members-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="deck" id="deck">
+
+  <!-- SLIDE 1 — TITLE -->
+  <section class="slide slide-title active" data-i="0">
+    <div class="corner-mark"><div class="blue"></div><div class="green"></div></div>
+    <div class="frame">
+      <div class="eyebrow">Final Project · Science of Happiness · Spring 2026</div>
+      <h1>Three Changes<br>That <span class="accent">Move the Needle</span></h1>
+      <div class="subtitle">A student-built framework for mental well-being.</div>
+      <div class="meta">
+        <div class="names">Anir Suren · Jordan Chen · Maya Patel · Tyler Brooks</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 2 — WHY THIS MATTERS -->
+  <section class="slide slide-why" data-i="1">
+    <div class="corner-mark"><div class="blue"></div><div class="green"></div></div>
+    <div class="frame">
+      <div class="left">
+        <div class="eyebrow">The Problem</div>
+        <h2>College mental health is in <span class="italic">crisis</span>.</h2>
+        <ul>
+          <li>Record numbers of students seeking treatment for depression and anxiety (Reilly, 2018).</li>
+          <li>Universities can't keep up with demand.</li>
+          <li>Most advice is either too vague ("be mindful") or too overwhelming ("overhaul your life").</li>
+          <li>Students need tools they can use <em>right now</em> — without waiting for institutional change.</li>
+        </ul>
+      </div>
+      <div class="right">
+        <img src="../slide images/02_why_this_matters.png" alt="Tired student at desk" />
+        <div class="stat-card">
+          <div class="label">Reilly · TIME · 2018</div>
+          <div class="num">Record-high</div>
+          <div class="src">student demand for mental health services</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 — THE THREE CHANGES -->
+  <section class="slide slide-three" data-i="2">
+    <div class="corner-mark"><div class="blue"></div><div class="green"></div></div>
+    <div class="frame">
+      <div class="eyebrow" style="text-align:center; margin-bottom: 24px;">Our Approach</div>
+      <h2>Three Small Changes</h2>
+      <p class="lede">Backed by class research. Realistic to actually do.</p>
+      <div class="three-grid">
+        <div class="three-card" data-color="green">
+          <div class="three-num">01</div>
+          <div class="three-title">Phone Boundaries</div>
+          <div class="three-tag">Reclaim focus and sleep by carving out two phone-free windows a day.</div>
+        </div>
+        <div class="three-card" data-color="coral">
+          <div class="three-num">02</div>
+          <div class="three-title">Three Good Things</div>
+          <div class="three-tag">Each night, write three good things from your day — shift what you pay attention to.</div>
+        </div>
+        <div class="three-card" data-color="gold">
+          <div class="three-num">03</div>
+          <div class="three-title">Sleep &amp; Movement</div>
+          <div class="three-tag">Consistent sleep schedule plus thirty minutes of daily walking. The basics, done daily.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4 — THE EVIDENCE -->
+  <section class="slide slide-evidence" data-i="3">
+    <div class="corner-mark"><div class="blue"></div><div class="green"></div></div>
+    <div class="frame">
+      <div class="eyebrow" style="text-align:center; margin-bottom: 24px;">The Research</div>
+      <h2>The Evidence</h2>
+      <p class="lede">Each change is backed by a study from class.</p>
+      <div class="evidence-grid">
+
+        <div class="ev-card" data-color="green">
+          <div class="ev-head">
+            <div class="ev-num">01</div>
+            <div class="ev-title">Phone Boundaries</div>
+          </div>
+          <div class="ev-section">The Practice</div>
+          <ul class="ev-list">
+            <li>1 hr phone-off during deep work</li>
+            <li>1 hr phone-free before bed</li>
+          </ul>
+          <div class="ev-cite">
+            <b>Twenge et al. (2018):</b> adolescent well-being collapsed after 2012 alongside smartphone adoption. <b>Brown &amp; Ryan (2003):</b> present-moment attention &rarr; greater well-being.
+          </div>
+        </div>
+
+        <div class="ev-card" data-color="coral">
+          <div class="ev-head">
+            <div class="ev-num">02</div>
+            <div class="ev-title">Three Good Things</div>
+          </div>
+          <div class="ev-section">The Practice</div>
+          <ul class="ev-list">
+            <li>Each night: 3 good things + why each mattered</li>
+            <li>Under 5 minutes</li>
+          </ul>
+          <div class="ev-cite">
+            <b>Seligman, Steen, Park, &amp; Peterson (2005):</b> one week of this exercise produced happiness gains lasting up to <b>six months</b>.
+          </div>
+        </div>
+
+        <div class="ev-card" data-color="gold">
+          <div class="ev-head">
+            <div class="ev-num">03</div>
+            <div class="ev-title">Sleep &amp; Movement</div>
+          </div>
+          <div class="ev-section">The Practice</div>
+          <ul class="ev-list">
+            <li>Consistent sleep window (30 min)</li>
+            <li>30 minutes of daily movement</li>
+          </ul>
+          <div class="ev-cite">
+            <b>Ratey &amp; Loehr (2011):</b> physical activity meaningfully improves cognition, mood, and stress regulation. Free, accessible, no app required.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5 — SO WE BUILT IT -->
+  <section class="slide slide-built" data-i="4">
+    <div class="corner-mark"><div class="blue"></div><div class="green"></div></div>
+    <div class="frame">
+      <div class="eyebrow">Knowing isn't the problem. Doing it consistently is.</div>
+      <h2>So We <span class="accent">Built It</span>.</h2>
+      <div class="url-hero">the-reset-theta.vercel.app</div>
+      <div class="tag">A 21-day tracker for the three changes. Open it on your phone. Try it tonight.</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6 — LIVE DEMO -->
+  <section class="slide slide-demo" data-i="5">
+    <div class="demo-frame">
+      <div class="demo-bar">
+        <div class="demo-tab">
+          <span class="demo-dot"></span>
+          <span>The Reset · Live Demo</span>
+        </div>
+        <div class="demo-url">https://the-reset-theta.vercel.app</div>
+      </div>
+      <iframe class="demo-iframe" id="demoFrame" src="about:blank" title="The Reset live demo"></iframe>
+    </div>
+  </section>
+
+  <!-- SLIDE 7 — WE USED IT OURSELVES -->
+  <section class="slide slide-members" data-i="6">
+    <div class="corner-mark"><div class="blue"></div><div class="green"></div></div>
+    <div class="frame">
+      <div class="eyebrow" style="text-align:center; margin-bottom: 24px;">Member Evidence</div>
+      <h2>We Used It Ourselves</h2>
+      <p class="lede">A few days each. Real data, real members.</p>
+      <div class="members-grid">
+        <div class="member-card">
+          <div class="member-shot"><img src="members/01_anir.png" alt="Anir's tracker" /></div>
+          <div class="member-meta">
+            <span class="member-name">Anir</span>
+            <span class="member-tag">keystone: <b>Phone Boundaries</b></span>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-shot"><img src="members/02_jordan.png" alt="Jordan's tracker" /></div>
+          <div class="member-meta">
+            <span class="member-name">Jordan</span>
+            <span class="member-tag">keystone: <b>Three Good Things</b></span>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-shot"><img src="members/03_maya.png" alt="Maya's tracker" /></div>
+          <div class="member-meta">
+            <span class="member-name">Maya</span>
+            <span class="member-tag">keystone: <b>Sleep &amp; Movement</b></span>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-shot"><img src="members/04_tyler.png" alt="Tyler's tracker" /></div>
+          <div class="member-meta">
+            <span class="member-name">Tyler</span>
+            <span class="member-tag">keystone: <b>Three Good Things</b></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 8 — BOTTOM LINE + REFERENCES -->
+  <section class="slide slide-bottom" data-i="7">
+    <div class="corner-mark"><div class="blue"></div><div class="green"></div></div>
+    <div class="frame">
+      <div class="left">
+        <div class="eyebrow">The Bottom Line</div>
+        <h2>Small, repeatable, <span class="accent">daily</span>.</h2>
+        <p class="lede">Well-being isn't built in one big change. It's built in three small ones, done consistently.</p>
+        <div class="pillars">
+          <div class="pillar"><span class="pillar-arrow">→</span><span class="pillar-text">Phone boundaries</span></div>
+          <div class="pillar"><span class="pillar-arrow">→</span><span class="pillar-text">Three good things</span></div>
+          <div class="pillar"><span class="pillar-arrow">→</span><span class="pillar-text">Sleep and movement</span></div>
+        </div>
+        <div class="thanks-tag">Pick one. Track it. Build from there.</div>
+      </div>
+      <div class="right">
+        <div class="refs-title">References</div>
+        <ul class="refs-list">
+          <li><b>Brown, K. W., &amp; Ryan, R. M.</b> (2003). The benefits of being present. <em>J. Personality and Social Psychology</em>, 84(4).</li>
+          <li><b>Ratey, J. J., &amp; Loehr, J. E.</b> (2011). The positive impact of physical activity on cognition during adulthood. <em>Reviews in the Neurosciences</em>, 22(2).</li>
+          <li><b>Reilly, K.</b> (2018). Record numbers of college students are seeking treatment for depression and anxiety. <em>TIME</em>.</li>
+          <li><b>Seligman, M. E. P., Steen, T. A., Park, N., &amp; Peterson, C.</b> (2005). Positive psychology progress. <em>American Psychologist</em>, 60(5).</li>
+          <li><b>Twenge, J. M., Martin, G. N., &amp; Campbell, W. K.</b> (2018). Decreases in psychological well-being among American adolescents after 2012. <em>Emotion</em>, 18(6).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="hint">← → arrow keys to navigate · F for fullscreen</div>
+
+<div class="deck-ui">
+  <button id="prev" aria-label="Previous">‹</button>
+  <span class="counter"><span id="curr">1</span> / <span id="total">8</span></span>
+  <button id="next" aria-label="Next">›</button>
+</div>
+
+<script>
+(() => {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const fill = document.getElementById('progressFill');
+  const currEl = document.getElementById('curr');
+  const totalEl = document.getElementById('total');
+  const demoFrame = document.getElementById('demoFrame');
+  const DEMO_URL = 'https://the-reset-theta.vercel.app';
+  const DEMO_SLIDE_IDX = 5;
+
+  totalEl.textContent = total;
+  let i = 0;
+
+  function go(n) {
+    i = Math.max(0, Math.min(total - 1, n));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    fill.style.width = ((i + 1) / total * 100) + '%';
+    currEl.textContent = i + 1;
+
+    // Lazy-load the demo iframe only when reaching that slide
+    if (i === DEMO_SLIDE_IDX && demoFrame.src !== DEMO_URL) {
+      demoFrame.src = DEMO_URL;
+    }
+  }
+
+  document.getElementById('prev').addEventListener('click', () => go(i - 1));
+  document.getElementById('next').addEventListener('click', () => go(i + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(i + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(i - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); go(0); }
+    else if (e.key === 'End') { e.preventDefault(); go(total - 1); }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+
+  // Click-anywhere advance (except buttons/iframe)
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.deck-ui') || e.target.closest('iframe') || e.target.closest('a')) return;
+    // disable click-to-advance — too easy to misfire during demo
+  });
+
+  go(0);
+})();
+</script>
+
+</body>
+</html>
