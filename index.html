@@ -637,6 +637,59 @@ html, body {
   color: var(--green);
 }
 
+/* BOTTOM LINE IMAGE (slide 8 right side) */
+.bottom-image {
+  background: var(--navy-2);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  overflow: hidden;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bottom-image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* SLIDE 9 — THANK YOU */
+.slide-thanks .frame {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.slide-thanks h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: clamp(64px, 8vw, 120px);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  margin-bottom: 28px;
+}
+.slide-thanks h2 .accent { font-style: italic; color: var(--green); }
+.slide-thanks .lede {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 22px;
+  color: rgba(245, 239, 228, 0.85);
+  line-height: 1.4;
+  margin-bottom: 24px;
+}
+.slide-thanks .meta-line {
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--mute);
+}
+.slide-thanks .right {
+  background: rgba(245, 239, 228, 0.04);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 32px;
+}
+
 /* Hint to navigate */
 .hint {
   position: fixed;
@@ -871,6 +924,22 @@ html, body {
           <div class="pillar"><span class="pillar-arrow">→</span><span class="pillar-text">Sleep and movement</span></div>
         </div>
         <div class="thanks-tag">Pick one. Track it. Build from there.</div>
+      </div>
+      <div class="right bottom-image">
+        <img src="images/09_bottom_line.png" alt="A small sprout growing from cracked earth" />
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 9 — THANK YOU + REFERENCES -->
+  <section class="slide slide-thanks" data-i="8">
+    <div class="corner-mark"><div class="blue"></div><div class="green"></div></div>
+    <div class="frame">
+      <div class="left">
+        <div class="eyebrow">Questions?</div>
+        <h2>Thank <span class="accent">You</span>.</h2>
+        <p class="lede">For listening — and for being part of the science.</p>
+        <div class="meta-line">Anir · Ketan · Jason · Aidan · Spring 2026</div>
       </div>
       <div class="right">
         <div class="refs-title">References</div>
